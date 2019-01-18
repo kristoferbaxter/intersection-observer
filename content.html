@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+  <head>
+    <style>
+      html {
+        height: 200%;
+        min-height: 400px;
+        text-align: center;
+        font-family: sans-serif;
+        padding-top: 3.5em;
+      }
+
+      #viewport {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        color: #aaa;
+        font-weight: bold;
+        font-size: 20vh;
+        border: 8px dashed #aaa;
+        padding-top: 40vh;
+        margin: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: default;
+      }
+
+      #filler {
+        background-color: #0ff;
+        display: block;
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        color: white;
+        position: relative;
+      }
+
+      #target {
+        background-color: #08f;
+        display: inline-block;
+        margin: 0;
+        color: white;
+        padding: 4em 3em;
+        position: relative;
+      }
+
+      #statusBox {
+        position: fixed;
+        top: 0;
+        left: 1em;
+        right: 1em;
+        font-family: monospace;
+        padding: 0.5em;
+        background-color: #ff8;
+        border: 3px solid #cc5;
+        opacity: 0.9;
+      }
+
+      #statusBox.yes {
+        background: #8f8;
+        border-color: #5c5;
+      }
+
+      #statusBox.no {
+        background: #f88;
+        border-color: #c55;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="viewport">Viewport</p>
+
+    <p>Scroll down...</p>
+    <p></p>
+
+    <div id="filler">filler</div>
+    <div id="target">Target</div>
+
+    <p id="statusBox">isIntersecting === <span id="statusText">unknown</span></p>
+    <script>
+      var statusBox = document.getElementById('statusBox');
+      var statusText = document.getElementById('statusText');
+
+      function handler(entries, observer) {
+        for (entry of entries) {
+          console.log(entry);
+
+          statusText.textContent = entry.isIntersecting;
+
+          if (entry.isIntersecting) {
+            statusBox.className = 'yes';
+          } else {
+            statusBox.className = 'no';
+          }
+        }
+      }
+
+      /* By default, invokes the handler whenever:
+       1. Any part of the target enters the viewport
+       2. The last part of the target leaves the viewport */
+
+      let observer = new IntersectionObserver(handler, {
+        rootMargin: '400px',
+      });
+      observer.observe(document.getElementById('target'));
+    </script>
+  </body>
+</html>
